@@ -1,0 +1,21 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'com.formdev:flatlaf:3.0' // Untuk modern look and feel
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
+}
+
+application {
+    mainClass = 'org.kelompok5.App'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}

@@ -1,4 +1,4 @@
-package org.kelompok5.models;
+package main;
 
 public class Praktikan extends User {
     KartuControl kartuControl;

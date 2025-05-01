@@ -1,4 +1,4 @@
-package org.kelompok5.models;
+package main;
 
 public abstract class User {
     String nama, nim;

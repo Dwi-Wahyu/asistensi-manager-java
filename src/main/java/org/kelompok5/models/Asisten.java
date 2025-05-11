@@ -5,8 +5,8 @@ import java.util.ArrayList;
 public class Asisten extends User {
     ArrayList<Praktikan> praktikanAsuhan;
 
-    public Asisten(String nama, String nim, int nilai) {
-        super(nama, nim, nilai);
+    public Asisten(String id, String nama, String nim, String password, int nilai) {
+        super(id, nama, nim, password, nilai);
     }
 
     @Override

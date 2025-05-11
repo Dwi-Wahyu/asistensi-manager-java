@@ -3,8 +3,8 @@ package org.kelompok5.models;
 public class Praktikan extends User {
     private KartuKontrol kartuKontrol;
 
-    public Praktikan(String nama, String nim, double nilai) {
-        super(nama, nim, nilai);
+    public Praktikan(String id, String nama, String nim, String password, double nilai) {
+        super(id, nama, nim, password, nilai);
         this.kartuKontrol = new KartuKontrol();
     }
 

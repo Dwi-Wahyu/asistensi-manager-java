@@ -9,14 +9,27 @@ public class Validator {
     public String inputString(String placeholder, String pesanError) {
         System.out.println(placeholder);
         System.out.print("> ");
-        String variable = scanner.nextLine();
+        String string = scanner.nextLine();
 
-        while (variable.isEmpty()) {
+        while (string.isEmpty()) {
             System.out.println("ERROR: " + pesanError);
             System.out.print("> ");
-            variable = scanner.nextLine();
+            string = scanner.nextLine();
         }
+        return string;
+    }
 
-        return variable;
+    public int inputInt(String placehorder, String pesanError) {
+        System.out.println(placehorder);
+        System.out.println("> ");
+        int integer = scanner.nextInt();
+
+        while (integer == 0) {
+            System.out.println("Error: " + pesanError);
+            System.out.println("> ");
+            integer = scanner.nextInt();
+
+        }
+        return integer;
     }
 }

@@ -1,2 +1,5 @@
-<!-- TODO: Velin -->
-<!-- buat isi readme tentang penjelasan kode project -->
+# AsistensiManager
+
+Aplikasi untuk memantau asistensi tugas praktikum berbasis OOP.
+
+## Struktur Class

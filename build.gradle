@@ -1,0 +1,30 @@
+// root/build.gradle
+plugins {
+    id 'java'
+    id 'application'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'com.formdev:flatlaf:3.0'
+    implementation 'com.googlecode.json-simple:json-simple:1.1.1'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
+    implementation libs.guava
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+application {
+    mainClass = 'org.kelompok5.App'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}

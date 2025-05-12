@@ -5,8 +5,9 @@ import java.util.ArrayList;
 public class Asisten extends User {
     ArrayList<Praktikan> praktikanAsuhan;
 
-    public Asisten(String id, String nama, String nim, String password, int nilai) {
+    public Asisten(String id, String nama, String nim, String password, double nilai) {
         super(id, nama, nim, password, nilai);
+        this.praktikanAsuhan = new ArrayList<>();
     }
 
     @Override
@@ -26,5 +27,7 @@ public class Asisten extends User {
             System.out.println("Praktikan sudah menjadi asuhan asisten");
             return;
         }
+
+        praktikanAsuhan.add(praktikan);
     }
 }

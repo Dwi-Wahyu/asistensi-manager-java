@@ -67,7 +67,7 @@ public class Laboratorium {
         System.out.println("   Daftar Asisten   ");
         System.out.println("=======================");
         for (Asisten asisten : daftarAsisten) {
-            System.out.printf("%s. %s", asisten.id, asisten.nama);
+            System.out.printf("%s. %s \n", asisten.id, asisten.nama);
         }
         System.out.println("=======================");
     }

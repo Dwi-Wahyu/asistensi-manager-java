@@ -1,15 +1,15 @@
 package org.kelompok5;
 
-import org.kelompok5.models.Laboratorium;
-import org.kelompok5.models.Praktikan;
-import org.kelompok5.models.User;
-import org.kelompok5.utils.Validator;
-
 import java.io.FileReader;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.kelompok5.models.Asisten;
+import org.kelompok5.models.Laboratorium;
+import org.kelompok5.models.Praktikan;
+import org.kelompok5.models.User;
+import org.kelompok5.utils.Validator;
 
 public class App {
     static Validator validator = new Validator();
@@ -23,11 +23,11 @@ public class App {
     public static void main(String[] args) {
         Laboratorium oop = new Laboratorium();
 
-        loadDataPraktikan("src/main/resources/Praktikan.json", oop);
+        loadDataUser("src/main/resources/Users.json", oop);
 
-        oop.tampilkanDaftarPraktikan();
+        oop.tampilkanDaftarAsisten();
 
-        runApp();
+        // runApp();
     }
 
     public static void runApp() {
@@ -62,7 +62,9 @@ public class App {
         System.out.println("Menu Register");
     }
 
-    public static void loadDataPraktikan(String filePath, Laboratorium laboratorium) {
+    // TODO: Tolong Alya baca data dari file baru looping panggil fungsi
+    // tambahDaftar dari class laboratorium untuk tambah asisten
+    public static void loadDataUser(String filePath, Laboratorium laboratorium) {
         try (FileReader reader = new FileReader(filePath)) {
             JSONArray jsonArray = (JSONArray) jsonParser.parse(reader);
 
@@ -75,9 +77,25 @@ public class App {
                 String password = (String) jsonObject.get("password");
                 double nilai = (double) jsonObject.get("nilai");
 
-                Praktikan praktikan = new Praktikan(id, nama, nim, password, nilai);
+                JSONArray asuhanArray = (JSONArray) jsonObject.get("praktikanAsuhan");
 
-                laboratorium.tambahDaftar(praktikan);
+                Asisten asisten = new Asisten(id, nama, nim, password, nilai);
+
+                for (Object asuhanObject : asuhanArray) {
+                    JSONObject praktikanObject = (JSONObject) asuhanObject;
+
+                    String idPraktikan = (String) praktikanObject.get("id");
+                    String namaPraktikan = (String) praktikanObject.get("nama");
+                    String nimPraktikan = (String) praktikanObject.get("nim");
+                    String passwordPraktikan = (String) praktikanObject.get("password");
+                    double nilaiPraktikan = (double) praktikanObject.get("nilai");
+
+                    Praktikan praktikan = new Praktikan(idPraktikan, namaPraktikan, nimPraktikan, passwordPraktikan, nilaiPraktikan);
+
+                    asisten.tambahAsuhan(praktikan);
+                }
+
+                laboratorium.tambahDaftar(asisten);
             }
 
         } catch (Exception e) {
@@ -87,14 +105,9 @@ public class App {
 
     // TODO: Tolong Alya baca data dari file baru looping panggil fungsi
     // tambahDaftar dari class laboratorium untuk tambah asisten
-    public static void loadDataAsisten(String filePath, Laboratorium laboratorium) {
-
-    }
-
-    // TODO: Tolong Alya baca data dari file baru looping panggil fungsi
-    // tambahDaftar dari class laboratorium untuk tambah asisten
     public static void loadDataTugas(String filePath, Laboratorium laboratorium) {
-
+        
     }
+
 
 }

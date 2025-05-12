@@ -1,5 +1,6 @@
 package org.kelompok5.models;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class Laboratorium {
@@ -15,6 +16,20 @@ public class Laboratorium {
             System.out.println("Praktikan bukan merupakan asuhan asisten");
             return;
         }
+        // Validasi bahwa tugas terdaftar di laboratorium sebelum melanjutkan
+        if (!daftarTugas.contains(tugas)) {
+            System.out.println("Tugas tidak terdaftar di laboratorium");
+            return;
+        }
+        // Membuat objek Asistensi dengan tanggal saat ini dan tugas yang diberikan
+        Asistensi asistensi = new Asistensi(tugas, LocalDate.now());
+        // Menambahkan asistensi ke kartu kontrol praktikan
+        praktikan.kartuKontrol.tambahAsistensi(asistensi);
+        // Menampilkan konfirmasi asistensi yang berhasil dengan detail
+        System.out.printf("Asistensi untuk tugas %s berhasil dilakukan oleh %s untuk %s.%n",
+            tugas.judul, asisten.nama, praktikan.nama);
+        System.out.printf("Status: %s, Nilai: %d%n",
+            asistensi.statusAsistensi.toString(), asistensi.nilaiAsistensi);
     }
 
     public void tambahDaftar(Praktikan praktikan) {
@@ -86,4 +101,8 @@ public class Laboratorium {
         System.out.println("=======================");
     }
 
+    // Getter untuk daftarAsisten agar dapat diakses oleh KartuKontrol
+    public ArrayList<Asisten> getDaftarAsisten() {
+        return daftarAsisten;
+    }
 }

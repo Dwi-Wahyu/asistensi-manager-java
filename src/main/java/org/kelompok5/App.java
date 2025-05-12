@@ -1,6 +1,7 @@
 package org.kelompok5;
 
 import java.io.FileReader;
+import java.time.LocalDate;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -8,6 +9,7 @@ import org.json.simple.parser.JSONParser;
 import org.kelompok5.models.Asisten;
 import org.kelompok5.models.Laboratorium;
 import org.kelompok5.models.Praktikan;
+import org.kelompok5.models.Tugas;
 import org.kelompok5.models.User;
 import org.kelompok5.utils.Validator;
 
@@ -24,8 +26,10 @@ public class App {
         Laboratorium oop = new Laboratorium();
 
         loadDataUser("src/main/resources/Users.json", oop);
+        loadDataTugas("src/main/resources/Tugas.json", oop);
 
         oop.tampilkanDaftarAsisten();
+        oop.tampilkanDaftarTugas();
 
         // runApp();
     }
@@ -58,12 +62,9 @@ public class App {
     }
 
     public static void showRegisterMenu() {
-
         System.out.println("Menu Register");
     }
 
-    // TODO: Tolong Alya baca data dari file baru looping panggil fungsi
-    // tambahDaftar dari class laboratorium untuk tambah asisten
     public static void loadDataUser(String filePath, Laboratorium laboratorium) {
         try (FileReader reader = new FileReader(filePath)) {
             JSONArray jsonArray = (JSONArray) jsonParser.parse(reader);
@@ -80,7 +81,6 @@ public class App {
                 JSONArray asuhanArray = (JSONArray) jsonObject.get("praktikanAsuhan");
 
                 Asisten asisten = new Asisten(id, nama, nim, password, nilai);
-
                 for (Object asuhanObject : asuhanArray) {
                     JSONObject praktikanObject = (JSONObject) asuhanObject;
 
@@ -106,8 +106,24 @@ public class App {
     // TODO: Tolong Alya baca data dari file baru looping panggil fungsi
     // tambahDaftar dari class laboratorium untuk tambah asisten
     public static void loadDataTugas(String filePath, Laboratorium laboratorium) {
-        
+        try (FileReader reader = new FileReader(filePath)) {
+            JSONArray jsonArray = (JSONArray) jsonParser.parse(reader);
+
+            for (Object obj : jsonArray) {
+                JSONObject jsonObject = (JSONObject) obj;
+
+                String judul = (String) jsonObject.get("judul");
+                String deskripsi = (String) jsonObject.get("deskripsi");
+                String deadlineStr = (String) jsonObject.get("deadline");
+
+                LocalDate deadline = LocalDate.parse(deadlineStr);
+
+                Tugas tugas = new Tugas(judul, deskripsi, deadline);
+
+                laboratorium.tambahDaftar(tugas);
+            }
+        } catch (Exception e) {
+            System.err.println("Gagal memuat data tugas: " + e.getMessage());
+        }
     }
-
-
 }

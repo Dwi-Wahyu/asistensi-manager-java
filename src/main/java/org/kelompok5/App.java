@@ -37,13 +37,13 @@ public class App {
         System.out.println("Pilih Menu :");
         System.out.println("1. Login");
         System.out.println("2. Register");
-        String menu = validator.inputString("-------------------------------------", "Tolong pilih menu");
+        int menu = validator.inputInt("-------------------------------------", "Tolong pilih menu");
 
         switch (menu) {
-            case "1":
+            case 1:
                 showLoginMenu();
                 break;
-            case "2":
+            case 2:
                 showRegisterMenu();
                 break;
             default:

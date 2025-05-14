@@ -11,27 +11,21 @@ import org.kelompok5.models.Laboratorium;
 import org.kelompok5.models.Praktikan;
 import org.kelompok5.models.Tugas;
 import org.kelompok5.models.User;
+import org.kelompok5.services.AuthService;
 import org.kelompok5.utils.Validator;
 
 public class App {
     static Validator validator = new Validator();
     static JSONParser jsonParser = new JSONParser();
-    User user;
-
-    public void setLoggedInUser(User user) {
-
-    }
+    static Laboratorium laboratorium = new Laboratorium();
+    static AuthService authService = new AuthService(laboratorium);
 
     public static void main(String[] args) {
-        Laboratorium oop = new Laboratorium();
 
-        loadDataUser("src/main/resources/Users.json", oop);
-        loadDataTugas("src/main/resources/Tugas.json", oop);
+        loadDataUser("src/main/resources/Users.json", laboratorium);
+        loadDataTugas("src/main/resources/Tugas.json", laboratorium);
 
-        oop.tampilkanDaftarAsisten();
-        oop.tampilkanDaftarTugas();
-
-        // runApp();
+        runApp();
     }
 
     public static void runApp() {
@@ -41,28 +35,83 @@ public class App {
         System.out.println("Pilih Menu :");
         System.out.println("1. Login");
         System.out.println("2. Register");
-        int menu = validator.inputInt("-------------------------------------", "Tolong pilih menu");
+        String[] validMenu = { "1", "2" };
+        String menu = validator.inputString("-------------------------------------", "Tolong pilih menu", validMenu);
 
         switch (menu) {
-            case 1:
-                showLoginMenu();
+            case "1":
+                User user = authService.login();
+
+                if (user != null) {
+                    if (user instanceof Asisten) {
+                        menuAsisten();
+                    } else if (user instanceof Praktikan) {
+                        menuPraktikan();
+                    }
+                }
                 break;
-            case 2:
-                showRegisterMenu();
-                break;
-            default:
-                System.out.println("Menu Tidak Valid");
+            case "2":
+                authService.register();
                 break;
         }
     }
 
-    public static void showLoginMenu() {
-        System.out.println("Menu Login");
+    private static void menuAsisten() {
+        while (true) {
+            System.out.println("\n=== MENU ASISTEN ===");
+            System.out.println("1. Tampilkan praktikan asuhan");
+            System.out.println("2. Tambah praktikan asuhan");
+            System.out.println("3. Logout");
+            String[] validMenu = { "1", "2", "3" };
+            String pilih = validator.inputString("Pilih: ", "ERROR: Pilihan tidak valid", validMenu);
 
+            switch (pilih) {
+                case "1":
+                    ((Asisten) authService.getLoggedInUser()).tampilkanDaftarPraktikanAsuhan();
+                    break;
+                case "2":
+                    laboratorium.tampilkanDaftarPraktikan();
+                    String nim = validator.inputNIM("Masukkan NIM praktikan:", "NIM tidak valid");
+                    Praktikan praktikan = laboratorium.getPraktikanByNIM(nim);
+                    if (praktikan != null) {
+                        ((Asisten) authService.getLoggedInUser()).tambahAsuhan(praktikan);
+                    } else {
+                        System.out.println("Praktikan tidak ditemukan.");
+                    }
+                    break;
+                case "3":
+                    return;
+                default:
+                    System.out.println("Pilihan tidak valid.");
+            }
+        }
     }
 
-    public static void showRegisterMenu() {
-        System.out.println("Menu Register");
+    private static void menuPraktikan() {
+        while (true) {
+            System.out.println("\n=== MENU PRAKTIKAN ===");
+            System.out.println("1. Tampilkan info saya");
+            System.out.println("2. Tampilkan kartu kontrol");
+            System.out.println("3. Asistensi Tugas Praktikum");
+            System.out.println("4. Logout");
+            String[] validMenu = { "1", "2", "3", "4" };
+            String pilih = validator.inputString("Pilih: ", "ERROR: Pilihan tidak valid", validMenu);
+
+            switch (pilih) {
+                case "1":
+                    authService.getLoggedInUser().showInfo();
+                    break;
+                case "2":
+                    ((Praktikan) authService.getLoggedInUser()).tampilkanKartuKontrol();
+                    break;
+                case "3":
+
+                    break;
+                case "4":
+                    authService.logout();
+                    break;
+            }
+        }
     }
 
     public static void loadDataUser(String filePath, Laboratorium laboratorium) {
@@ -90,9 +139,11 @@ public class App {
                     String passwordPraktikan = (String) praktikanObject.get("password");
                     double nilaiPraktikan = (double) praktikanObject.get("nilai");
 
-                    Praktikan praktikan = new Praktikan(idPraktikan, namaPraktikan, nimPraktikan, passwordPraktikan, nilaiPraktikan);
+                    Praktikan praktikan = new Praktikan(idPraktikan, namaPraktikan, nimPraktikan, passwordPraktikan,
+                            nilaiPraktikan);
 
                     asisten.tambahAsuhan(praktikan);
+                    laboratorium.tambahDaftar(praktikan);
                 }
 
                 laboratorium.tambahDaftar(asisten);

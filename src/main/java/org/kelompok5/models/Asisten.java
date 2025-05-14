@@ -30,4 +30,11 @@ public class Asisten extends User {
 
         praktikanAsuhan.add(praktikan);
     }
+
+    public void tampilkanDaftarPraktikanAsuhan() {
+        System.out.println("Daftar Asuhan:");
+        for (Praktikan p : praktikanAsuhan) {
+            System.out.println("- " + p.nama + " (" + p.nim + ")");
+        }
+    }
 }

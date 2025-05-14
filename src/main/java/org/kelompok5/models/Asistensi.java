@@ -15,18 +15,19 @@ public class Asistensi {
     private int nilaiAsistensi = 100;
     private StatusAsistensi statusAsistensi;
 
-    public Asistensi(Tugas tugas, LocalDate tanggal, int nilaiAsistensi, StatusAsistensi statusAsistensi ){
+    public Asistensi(Tugas tugas, LocalDate tanggal, int nilaiAsistensi, StatusAsistensi statusAsistensi) {
         this.tugas = tugas;
         this.tanggal = tanggal;
         this.nilaiAsistensi = nilaiAsistensi;
-        this.statusAsistensi = (tanggal.isAfter(tugas.deadline)) ? StatusAsistensi.TERLAMBAT : StatusAsistensi.TEPAT_WAKTU;
+        this.statusAsistensi = (tanggal.isAfter(tugas.deadline)) ? StatusAsistensi.TERLAMBAT
+                : StatusAsistensi.TEPAT_WAKTU;
 
-    long selisihHari = tugas.deadline.until(tanggal, ChronoUnit.DAYS);
-    if (selisihHari > 7){
-        nilaiAsistensi = (int) (nilaiAsistensi * 0.7);
-    } else if(selisihHari > 14){
-        nilaiAsistensi = (int) (nilaiAsistensi * 0.9);
+        long selisihHari = tugas.deadline.until(tanggal, ChronoUnit.DAYS);
+        if (selisihHari > 7) {
+            nilaiAsistensi = (int) (nilaiAsistensi * 0.7);
+        } else if (selisihHari > 14) {
+            nilaiAsistensi = (int) (nilaiAsistensi * 0.9);
+        }
+
     }
-
-}
 }

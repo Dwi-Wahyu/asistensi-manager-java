@@ -24,7 +24,6 @@ public class Laboratorium {
         }
 
         daftarPraktikan.add(praktikan);
-        System.out.println("Berhasil menambahkan praktikan");
     }
 
     public void tambahDaftar(Asisten asisten) {
@@ -39,7 +38,6 @@ public class Laboratorium {
         }
 
         daftarAsisten.add(asisten);
-        System.out.println("Berhasil menambahkan Asisten");
     }
 
     public void tambahDaftar(Tugas tugas) {
@@ -49,7 +47,6 @@ public class Laboratorium {
         }
 
         daftarTugas.add(tugas);
-        System.out.println("Berhasil menambahkan Tugas");
     }
 
     public void tampilkanDaftarPraktikan() {
@@ -86,4 +83,47 @@ public class Laboratorium {
         System.out.println("=======================");
     }
 
+    public boolean nimSudahTerdaftar(String nim) {
+        for (Praktikan p : daftarPraktikan) {
+            if (p.nim.equals(nim))
+                return true;
+        }
+        for (Asisten a : daftarAsisten) {
+            if (a.nim.equals(nim))
+                return true;
+        }
+        return false;
+    }
+
+    public User cariUser(String nim, String password) {
+        for (Praktikan p : daftarPraktikan) {
+            if (p.nim.equals(nim) && getPassword(p).equals(password))
+                return p;
+        }
+        for (Asisten a : daftarAsisten) {
+            if (a.nim.equals(nim) && getPassword(a).equals(password))
+                return a;
+        }
+        System.out.println("Login gagal: NIM atau password salah.");
+        return null;
+    }
+
+    public Praktikan getPraktikanByNIM(String nim) {
+        for (Praktikan praktikan : daftarPraktikan) {
+            if (praktikan.nim.equals(nim)) {
+                return praktikan;
+            }
+        }
+        return null;
+    }
+
+    private String getPassword(User user) {
+        try {
+            java.lang.reflect.Field field = User.class.getDeclaredField("password");
+            field.setAccessible(true);
+            return (String) field.get(user);
+        } catch (Exception e) {
+            return "";
+        }
+    }
 }

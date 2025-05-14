@@ -1,5 +1,6 @@
 package org.kelompok5.utils;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 // TODO: Indira buat method input tipe data lain pelajari cara pakai method di App.java
@@ -17,6 +18,32 @@ public class Validator {
             string = scanner.nextLine();
         }
         return string;
+    }
+
+    public String inputString(String placeholder, String pesanError, String[] validInput) {
+        System.out.println(placeholder);
+
+        while (true) {
+            System.out.print("> ");
+            String input = scanner.nextLine().trim();
+
+            // Periksa jika input kosong
+            if (input.isEmpty()) {
+                System.out.println("ERROR: Input tidak boleh kosong");
+                continue;
+            }
+
+            // Jika validInput diberikan, periksa kecocokan
+            if (validInput != null && validInput.length > 0) {
+                if (!Arrays.asList(validInput).contains(input)) {
+                    System.out.println("ERROR: " + pesanError);
+                    System.out.println("Pilihan valid: " + String.join(", ", validInput));
+                    continue;
+                }
+            }
+
+            return input;
+        }
     }
 
     public int inputInt(String placehorder, String pesanError) {

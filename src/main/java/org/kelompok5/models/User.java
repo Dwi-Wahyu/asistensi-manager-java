@@ -2,7 +2,7 @@ package org.kelompok5.models;
 
 // User.java (Abstract Class)
 public abstract class User {
-    String nama, nim, id;
+    public String nama, nim, id;
     private String password;
     private double nilai;
 

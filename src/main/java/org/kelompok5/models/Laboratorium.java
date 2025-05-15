@@ -1,5 +1,6 @@
 package org.kelompok5.models;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class Laboratorium {
@@ -15,6 +16,27 @@ public class Laboratorium {
             System.out.println("Praktikan bukan merupakan asuhan asisten");
             return;
         }
+        // Validasi bahwa tugas terdaftar di laboratorium sebelum melanjutkan
+        if (!daftarTugas.contains(tugas)) {
+            System.out.println("Tugas tidak terdaftar di laboratorium");
+            return;
+        }
+        // TODO: cek apakah tugas telah dikerjakan oleh praktikan
+        for (Asistensi asistensi : praktikan.getKartuKontrol().getRiwayatAsistensi()) {
+            if (asistensi.getTugas().equals(tugas)) {
+                System.out.println("Anda telah melakukan asistensi " + tugas.judul);
+                return;
+            }
+        }
+        // Membuat objek Asistensi dengan tanggal saat ini dan tugas yang diberikan
+        Asistensi asistensi = new Asistensi(tugas, LocalDate.now());
+        // Menambahkan asistensi ke kartu kontrol praktikan
+        praktikan.getKartuKontrol().tambahAsistensi(asistensi);
+        // Menampilkan konfirmasi asistensi yang berhasil dengan detail
+        System.out.printf("Asistensi untuk tugas %s berhasil dilakukan oleh %s untuk %s.%n",
+                tugas.judul, asisten.nama, praktikan.nama);
+        System.out.printf("Status: %s, Nilai: %d%n",
+                asistensi.getStatusAsistensi().toString(), asistensi.getNilaiAsistensi());
     }
 
     public void tambahDaftar(Praktikan praktikan) {
@@ -50,27 +72,42 @@ public class Laboratorium {
     }
 
     public void tampilkanDaftarPraktikan() {
-        System.out.println("=======================");
+        System.out.println("\n=======================");
         System.out.println("   Daftar Praktikan   ");
         System.out.println("=======================");
         for (Praktikan praktikan : daftarPraktikan) {
-            System.out.printf("%s. %s \n", praktikan.id, praktikan.nama);
+            System.out.printf("%s. %s \n", praktikan.nim, praktikan.nama);
+        }
+        System.out.println("=======================");
+    }
+
+    public void tampilkanDaftarAsistenPraktikan() {
+        System.out.println("\n=======================");
+        System.out.println("   Daftar Praktikan   ");
+        System.out.println("=======================");
+        for (Praktikan praktikan : daftarPraktikan) {
+
+            if (praktikan.getAsisten() == null) {
+                System.out.printf("%s. %s. Belum memiliki asisten \n", praktikan.nim, praktikan.nama);
+            } else {
+                System.out.printf("%s. %s. Asuhan %s \n", praktikan.nim, praktikan.nama, praktikan.getAsisten().nama);
+            }
         }
         System.out.println("=======================");
     }
 
     public void tampilkanDaftarAsisten() {
-        System.out.println("=======================");
+        System.out.println("\n=======================");
         System.out.println("   Daftar Asisten   ");
         System.out.println("=======================");
         for (Asisten asisten : daftarAsisten) {
-            System.out.printf("%s. %s \n", asisten.id, asisten.nama);
+            System.out.printf("%s. %s \n", asisten.nim, asisten.nama);
         }
         System.out.println("=======================");
     }
 
     public void tampilkanDaftarTugas() {
-        System.out.println("=======================");
+        System.out.println("\n=======================");
         System.out.println("   Daftar Tugas   ");
         System.out.println("=======================");
         for (Tugas tugas : daftarTugas) {
@@ -126,4 +163,29 @@ public class Laboratorium {
             return "";
         }
     }
+
+    public ArrayList<Asisten> getDaftarAsisten() {
+        return daftarAsisten;
+    }
+
+    public ArrayList<User> getSemuaUser() {
+        ArrayList<User> semua = new ArrayList<>();
+        semua.addAll(daftarPraktikan);
+        semua.addAll(daftarAsisten);
+        return semua;
+    }
+
+    public Tugas getTugasByJudul(String judul) {
+        for (Tugas tugas : daftarTugas) {
+            if (tugas.judul.equalsIgnoreCase(judul)) {
+                return tugas;
+            }
+        }
+        return null;
+    }
+
+    public ArrayList<Tugas> getDaftarTugas() {
+        return daftarTugas;
+    }
+
 }

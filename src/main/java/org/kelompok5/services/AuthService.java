@@ -1,6 +1,9 @@
 package org.kelompok5.services;
 
+import java.util.ArrayList;
+
 import org.kelompok5.models.*;
+import org.kelompok5.utils.JsonHelper;
 import org.kelompok5.utils.Validator;
 
 public class AuthService {
@@ -17,37 +20,64 @@ public class AuthService {
         return loggedInUser;
     }
 
+    // TODO: wahyu simpan data user ke file
     public void register() {
         System.out.println("\n=== REGISTER ===");
-        String role = validator.inputString("Pilih Role (asisten/praktikan)", "Role tidak valid",
+        String role = validator.inputString("Pilih Role (asisten/praktikan): ", "Role tidak valid",
                 new String[] { "asisten", "praktikan" });
-        String id = validator.InputId("Masukkan ID (awali huruf):", "ID harus diawali huruf");
-        String nama = validator.inputNama("Masukkan Nama:", "Nama minimal 3 karakter");
-        String nim = validator.inputNIM("Masukkan NIM:", "Format NIM tidak valid");
-        String password = validator.inputPassword("Masukkan Password:", "Password minimal 6 karakter");
-        double nilai = validator.inputNilai("Masukkan Nilai (0-100):", "Nilai harus antara 0 dan 100");
-
-        // Cek apakah NIM sudah digunakan
-        if (laboratorium.nimSudahTerdaftar(nim)) {
+        String nama = validator.inputNama("Masukkan Nama: ", "Nama minimal 3 karakter");
+        String nim = validator.inputNIM("Masukkan NIM: ", "Format NIM tidak valid");
+        while (laboratorium.nimSudahTerdaftar(nim)) {
             System.out.println("ERROR: NIM sudah terdaftar!");
-            return;
+            nim = validator.inputNIM("Masukkan NIM: ", "Format NIM tidak valid");
         }
+        String password = validator.inputPassword("Masukkan Password: ", "Password minimal 6 karakter");
+        double nilai = validator.inputNilai("Masukkan Nilai (0-100): ", "Nilai harus antara 0 dan 100");
 
         if (role.equals("asisten")) {
-            Asisten asisten = new Asisten(id, nama, nim, password, nilai);
+            Asisten asisten = new Asisten(nama, nim, password, nilai);
             laboratorium.tambahDaftar(asisten);
         } else {
-            Praktikan praktikan = new Praktikan(id, nama, nim, password, nilai);
+            System.out.println("\n--- Pilih Asisten Pembimbing ---");
+            int index = 1;
+            for (Asisten asisten : laboratorium.getDaftarAsisten()) {
+                System.out.println(index + ". " + asisten.nama + " (NIM: " + asisten.nim + ")");
+                index++;
+            }
+
+            ArrayList<Asisten> daftarAsisten = laboratorium.getDaftarAsisten();
+
+            if (daftarAsisten.isEmpty()) {
+                System.out.println("Tidak ada asisten tersedia.");
+                return;
+            }
+
+            String inputPlaceholder = "Masukkan nomor asisten yang kamu pilih: ";
+            int pilihan = validator.inputInt(inputPlaceholder, "Input tidak valid");
+
+            // Validasi pilihan
+            while (pilihan < 1 || pilihan > daftarAsisten.size()) {
+                System.out.println("Asisten tidak ditemukan");
+                pilihan = validator.inputInt(inputPlaceholder, "Input tidak valid");
+            }
+
+            Asisten asistenPembimbing = daftarAsisten.get(pilihan - 1);
+
+            Praktikan praktikan = new Praktikan(nama, nim, password, nilai, asistenPembimbing);
+            asistenPembimbing.tambahAsuhan(praktikan);
             laboratorium.tambahDaftar(praktikan);
+
         }
 
-        System.out.println("Registrasi berhasil!");
+        JsonHelper.simpanDataUser(laboratorium);
+
+        System.out.println("Registrasi berhasil!. Silahkan login \n");
     }
 
     public User login() {
         System.out.println("\n=== LOGIN ===");
-        String nim = validator.inputString("Masukkan NIM:", "NIM tidak boleh kosong");
-        String password = validator.inputString("Masukkan Password:", "Password tidak boleh kosong");
+        String nim = validator.inputString("Masukkan NIM: ", "NIM tidak boleh kosong");
+        String password = validator.inputPassword("Masukkan Password: ", "Password minimal 6 karakter");
 
         User user = laboratorium.cariUser(nim, password);
 

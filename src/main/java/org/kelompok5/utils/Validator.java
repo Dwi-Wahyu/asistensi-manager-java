@@ -8,65 +8,45 @@ public class Validator {
     private Scanner scanner = new Scanner(System.in);
 
     public String inputString(String placeholder, String pesanError) {
-        System.out.println(placeholder);
-        System.out.print("> ");
+        System.out.print(placeholder);
         String string = scanner.nextLine();
 
         while (string.trim().isEmpty()) {
             System.out.println("ERROR: " + pesanError);
-            System.out.print("> ");
+            System.out.print(placeholder);
             string = scanner.nextLine();
         }
         return string;
     }
 
     public String inputString(String placeholder, String pesanError, String[] validInput) {
-        System.out.println(placeholder);
+        System.out.print(placeholder);
+        String input = scanner.nextLine().trim();
 
         while (true) {
-            System.out.print("> ");
-            String input = scanner.nextLine().trim();
-
-            // Periksa jika input kosong
             if (input.isEmpty()) {
-                System.out.println("ERROR: Input tidak boleh kosong");
-                continue;
+                System.out.println("ERROR: " + pesanError);
+            } else if (validInput != null && validInput.length > 0 && !Arrays.asList(validInput).contains(input)) {
+                System.out.println("ERROR: " + pesanError);
+                System.out.println("Pilihan valid: " + String.join(", ", validInput));
+            } else {
+                return input;
             }
 
-            // Jika validInput diberikan, periksa kecocokan
-            if (validInput != null && validInput.length > 0) {
-                if (!Arrays.asList(validInput).contains(input)) {
-                    System.out.println("ERROR: " + pesanError);
-                    System.out.println("Pilihan valid: " + String.join(", ", validInput));
-                    continue;
-                }
-            }
-
-            return input;
+            System.out.print(placeholder);
+            input = scanner.nextLine().trim();
         }
     }
 
     public int inputInt(String placehorder, String pesanError) {
-        System.out.println(placehorder);
-        System.out.println("> ");
+        System.out.print(placehorder);
 
         while (!scanner.hasNextInt()) {
             System.out.println("Error: " + pesanError);
-            System.out.println("> ");
+            System.out.print(placehorder);
             scanner.nextInt(); // buang input invalid
-
         }
         return scanner.nextInt();
-    }
-
-    // Khusus validator kelas user id,nama, nim, nilai, password
-    public String InputId(String placeholder, String pesanError) {
-        String id = inputString(placeholder, pesanError);
-        while (!id.matches("[A-Za-Z].*")) {
-            System.out.println("Error: " + pesanError);
-            id = inputString(placeholder, pesanError);
-        }
-        return id;
     }
 
     public String inputNama(String placeholder, String pesanError) {
@@ -80,7 +60,7 @@ public class Validator {
 
     public String inputNIM(String placeholder, String pesanError) {
         String nim = inputString(placeholder, pesanError);
-        while (!nim.matches("\\d{10,}")) {
+        while (!nim.matches("^[A-Z]\\d{9}$")) {
             System.out.println("ERROR: " + pesanError);
             nim = inputString(placeholder, pesanError);
         }

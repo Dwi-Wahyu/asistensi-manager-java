@@ -45,4 +45,5 @@ public class Asistensi {
     public StatusAsistensi getStatusAsistensi() {
         return statusAsistensi;
     }
+
 }

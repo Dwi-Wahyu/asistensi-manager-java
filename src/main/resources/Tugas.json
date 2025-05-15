@@ -49,5 +49,10 @@
     "judul": "Tugas 10 PBO",
     "deadline": "2025-07-22"
   },
-  { "deskripsi": "testing123", "judul": "testing", "deadline": "2028-12-21" }
+  { "deskripsi": "testing123", "judul": "testing", "deadline": "2028-12-21" },
+  {
+    "deskripsi": "Menerapkan polmorfisme pada kode",
+    "judul": "Tugas Final Lab",
+    "deadline": "2024-10-28"
+  }
 ]

@@ -12,6 +12,12 @@
         "nim": "J987654321",
         "nama": "Jane Smith",
         "nilai": 90.0
+      },
+      {
+        "password": "haris123",
+        "nim": "H071241070",
+        "nama": "haris",
+        "nilai": 99.0
       }
     ],
     "password": "ahmadfauzi123",
@@ -21,7 +27,14 @@
     "nilai": 88.0
   },
   {
-    "praktikanAsuhan": [],
+    "praktikanAsuhan": [
+      {
+        "password": "ridwan123",
+        "nim": "H071241270",
+        "nama": "ridwan",
+        "nilai": 75.0
+      }
+    ],
     "password": "budisantoso123",
     "nim": "B223344556",
     "peran": "Asisten",
@@ -29,7 +42,14 @@
     "nilai": 86.5
   },
   {
-    "praktikanAsuhan": [],
+    "praktikanAsuhan": [
+      {
+        "password": "sarham123",
+        "nim": "H071241170",
+        "nama": "sarham",
+        "nilai": 80.0
+      }
+    ],
     "password": "citradewi123",
     "nim": "C334455667",
     "peran": "Asisten",
@@ -43,6 +63,12 @@
         "nim": "H071241077",
         "nama": "wahyu",
         "nilai": 80.0
+      },
+      {
+        "password": "jonashandsome",
+        "nim": "J123456787",
+        "nama": "jonas baka",
+        "nilai": 10.0
       }
     ],
     "password": "dianpratama123",

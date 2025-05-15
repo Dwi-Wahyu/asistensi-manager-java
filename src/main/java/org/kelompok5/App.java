@@ -1,8 +1,10 @@
 package org.kelompok5;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 import org.kelompok5.models.Asisten;
+import org.kelompok5.models.Asistensi;
 import org.kelompok5.models.Laboratorium;
 import org.kelompok5.models.Praktikan;
 import org.kelompok5.models.Tugas;
@@ -61,7 +63,6 @@ public class App {
         while (true) {
             System.out.println("\n=== MENU ASISTEN ===");
             System.out.println("1. Daftar praktikan asuhan");
-            System.out.println("2. Tambahkan praktikan asuhan");
             System.out.println("3. Tambahkan tugas");
             System.out.println("4. Tampilkan daftar tugas");
             System.out.println("5. Logout");
@@ -80,7 +81,7 @@ public class App {
                     runApp();
                     break;
                 case "4":
-                    laboratorium.tampilkanDaftarTugas();
+                    laboratorium.tampilkanDaftarTugas(laboratorium.getDaftarTugas());
                     menuAsisten();
                     break;
                 case "5":
@@ -110,7 +111,7 @@ public class App {
                     ((Praktikan) authService.getLoggedInUser()).tampilkanKartuKontrol();
                     break;
                 case "3":
-                    laboratorium.tampilkanDaftarTugas();
+                    menuTampilkanDaftarTugasPraktikan();
                     menuPraktikan();
                     break;
                 case "4":
@@ -123,6 +124,40 @@ public class App {
                     return;
             }
         }
+    }
+
+    private static void menuTampilkanDaftarTugasPraktikan() {
+        Praktikan praktikan = (Praktikan) authService.getLoggedInUser();
+
+        ArrayList<Tugas> tugasYgTelahDikerjakan = new ArrayList<>();
+        ArrayList<Tugas> tugasLab = laboratorium.getDaftarTugas();
+
+        for (Asistensi asistensi : praktikan.getKartuKontrol().getRiwayatAsistensi()) {
+            Tugas tugas = asistensi.getTugas();
+            tugas.setStatus("SELESAI");
+            tugasYgTelahDikerjakan.add(tugas);
+        }
+
+        ArrayList<Tugas> daftarTugasGabungan = new ArrayList<>();
+
+        for (Tugas tugas : tugasYgTelahDikerjakan) {
+            daftarTugasGabungan.add(tugas);
+        }
+
+        for (Tugas tugasLabItem : tugasLab) {
+            boolean isDuplikat = false;
+            for (Tugas tugasGabungan : daftarTugasGabungan) {
+                if (tugasLabItem.judul.equals(tugasGabungan.judul)) {
+                    isDuplikat = true;
+                    break;
+                }
+            }
+            if (!isDuplikat) {
+                daftarTugasGabungan.add(tugasLabItem);
+            }
+        }
+
+        laboratorium.tampilkanDaftarTugas(daftarTugasGabungan);
     }
 
     private static void menuTambahkanTugas() {
@@ -174,7 +209,7 @@ public class App {
             return;
         }
 
-        laboratorium.tampilkanDaftarTugas();
+        laboratorium.tampilkanDaftarTugas(laboratorium.getDaftarTugas());
 
         String judulTugas = validator.inputString("Ketik Judul Tugas: ", "Input Tidak Valid");
 

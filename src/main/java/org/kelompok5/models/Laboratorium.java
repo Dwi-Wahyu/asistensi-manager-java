@@ -106,7 +106,7 @@ public class Laboratorium {
         System.out.println("=======================");
     }
 
-    public void tampilkanDaftarTugas() {
+    public void tampilkanDaftarTugas(ArrayList<Tugas> daftarTugas) {
         System.out.println("\n=======================");
         System.out.println("   Daftar Tugas   ");
         System.out.println("=======================");
@@ -115,6 +115,7 @@ public class Laboratorium {
             System.out.println("Judul     : " + tugas.judul);
             System.out.println("Deskripsi : " + tugas.deskripsi);
             System.out.println("Deadline  : " + tugas.deadline);
+            System.out.println("Status  : " + tugas.status);
             System.out.println("-----------------------");
         }
         System.out.println("=======================");
@@ -166,13 +167,6 @@ public class Laboratorium {
 
     public ArrayList<Asisten> getDaftarAsisten() {
         return daftarAsisten;
-    }
-
-    public ArrayList<User> getSemuaUser() {
-        ArrayList<User> semua = new ArrayList<>();
-        semua.addAll(daftarPraktikan);
-        semua.addAll(daftarAsisten);
-        return semua;
     }
 
     public Tugas getTugasByJudul(String judul) {

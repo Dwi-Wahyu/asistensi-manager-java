@@ -41,8 +41,4 @@ public class Asisten extends User {
         }
     }
 
-    @Override
-    public String getRole() {
-        return "Asisten";
-    }
 }

@@ -31,5 +31,4 @@ public abstract class User {
         return password;
     }
 
-    public abstract String getRole();
 }

@@ -43,8 +43,4 @@ public class Praktikan extends User {
         return kartuKontrol;
     }
 
-    @Override
-    public String getRole() {
-        return "Praktikan";
-    }
 }

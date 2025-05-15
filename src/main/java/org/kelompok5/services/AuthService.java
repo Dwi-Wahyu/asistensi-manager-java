@@ -22,9 +22,7 @@ public class AuthService {
 
     // TODO: wahyu simpan data user ke file
     public void register() {
-        System.out.println("\n=== REGISTER ===");
-        String role = validator.inputString("Pilih Role (asisten/praktikan): ", "Role tidak valid",
-                new String[] { "asisten", "praktikan" });
+        System.out.println("\n=== REGISTER PRAKTIKAN ===");
         String nama = validator.inputNama("Masukkan Nama: ", "Nama minimal 3 karakter");
         String nim = validator.inputNIM("Masukkan NIM: ", "Format NIM tidak valid");
         while (laboratorium.nimSudahTerdaftar(nim)) {
@@ -34,40 +32,34 @@ public class AuthService {
         String password = validator.inputPassword("Masukkan Password: ", "Password minimal 6 karakter");
         double nilai = validator.inputNilai("Masukkan Nilai (0-100): ", "Nilai harus antara 0 dan 100");
 
-        if (role.equals("asisten")) {
-            Asisten asisten = new Asisten(nama, nim, password, nilai);
-            laboratorium.tambahDaftar(asisten);
-        } else {
-            System.out.println("\n--- Pilih Asisten Pembimbing ---");
-            int index = 1;
-            for (Asisten asisten : laboratorium.getDaftarAsisten()) {
-                System.out.println(index + ". " + asisten.nama + " (NIM: " + asisten.nim + ")");
-                index++;
-            }
-
-            ArrayList<Asisten> daftarAsisten = laboratorium.getDaftarAsisten();
-
-            if (daftarAsisten.isEmpty()) {
-                System.out.println("Tidak ada asisten tersedia.");
-                return;
-            }
-
-            String inputPlaceholder = "Masukkan nomor asisten yang kamu pilih: ";
-            int pilihan = validator.inputInt(inputPlaceholder, "Input tidak valid");
-
-            // Validasi pilihan
-            while (pilihan < 1 || pilihan > daftarAsisten.size()) {
-                System.out.println("Asisten tidak ditemukan");
-                pilihan = validator.inputInt(inputPlaceholder, "Input tidak valid");
-            }
-
-            Asisten asistenPembimbing = daftarAsisten.get(pilihan - 1);
-
-            Praktikan praktikan = new Praktikan(nama, nim, password, nilai, asistenPembimbing);
-            asistenPembimbing.tambahAsuhan(praktikan);
-            laboratorium.tambahDaftar(praktikan);
-
+        System.out.println("\n--- Pilih Asisten Pembimbing ---");
+        int index = 1;
+        for (Asisten asisten : laboratorium.getDaftarAsisten()) {
+            System.out.println(index + ". " + asisten.nama + " (NIM: " + asisten.nim + ")");
+            index++;
         }
+
+        ArrayList<Asisten> daftarAsisten = laboratorium.getDaftarAsisten();
+
+        if (daftarAsisten.isEmpty()) {
+            System.out.println("Tidak ada asisten tersedia.");
+            return;
+        }
+
+        String inputPlaceholder = "Masukkan nomor asisten yang kamu pilih: ";
+        int pilihan = validator.inputInt(inputPlaceholder, "Input tidak valid");
+
+        // Validasi pilihan
+        while (pilihan < 1 || pilihan > daftarAsisten.size()) {
+            System.out.println("Asisten tidak ditemukan");
+            pilihan = validator.inputInt(inputPlaceholder, "Input tidak valid");
+        }
+
+        Asisten asistenPembimbing = daftarAsisten.get(pilihan - 1);
+
+        Praktikan praktikan = new Praktikan(nama, nim, password, nilai, asistenPembimbing);
+        asistenPembimbing.tambahAsuhan(praktikan);
+        laboratorium.tambahDaftar(praktikan);
 
         JsonHelper.simpanDataUser(laboratorium);
 

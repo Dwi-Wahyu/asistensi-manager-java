@@ -93,7 +93,7 @@ public class JsonHelper {
     public static void simpanDataUser(Laboratorium laboratorium) {
         JSONArray jsonArray = new JSONArray();
 
-        for (User user : laboratorium.getSemuaUser()) {
+        for (User user : laboratorium.getDaftarAsisten()) {
 
             JSONObject userObject = new JSONObject(); // ⬅️ juga bisa ditaruh di sini
 
@@ -102,27 +102,23 @@ public class JsonHelper {
             userObject.put("password", user.getPassword());
             userObject.put("nilai", user.getNilai());
 
-            if (user instanceof Asisten) {
-                Asisten asisten = (Asisten) user;
-                userObject.put("peran", "Asisten");
+            Asisten asisten = (Asisten) user;
+            userObject.put("peran", "Asisten");
 
-                JSONArray asuhanArray = new JSONArray();
+            JSONArray asuhanArray = new JSONArray();
 
-                for (Praktikan praktikan : asisten.getPraktikanAsuhan()) {
-                    JSONObject praktikanObj = new JSONObject();
+            for (Praktikan praktikan : asisten.getPraktikanAsuhan()) {
+                JSONObject praktikanObj = new JSONObject();
 
-                    praktikanObj.put("nama", praktikan.nama);
-                    praktikanObj.put("nim", praktikan.nim);
-                    praktikanObj.put("password", praktikan.getPassword());
-                    praktikanObj.put("nilai", praktikan.getNilai());
+                praktikanObj.put("nama", praktikan.nama);
+                praktikanObj.put("nim", praktikan.nim);
+                praktikanObj.put("password", praktikan.getPassword());
+                praktikanObj.put("nilai", praktikan.getNilai());
 
-                    asuhanArray.add(praktikanObj);
-                }
-
-                userObject.put("praktikanAsuhan", asuhanArray);
-            } else {
-                userObject.put("peran", "Praktikan");
+                asuhanArray.add(praktikanObj);
             }
+
+            userObject.put("praktikanAsuhan", asuhanArray);
 
             jsonArray.add(userObject);
         }

@@ -160,6 +160,7 @@ Kelas utilitas untuk menyimpan dan memuat data dari/tabel file JSON.
 
 ## Cara Penggunaan
 
+<<<<<<< HEAD
 1. Clone Project dengan perintah
 
    ```
@@ -182,3 +183,17 @@ Kelas utilitas untuk menyimpan dan memuat data dari/tabel file JSON.
 
 - JDK 21
 - Git (untuk cloning repositori)
+=======
+1. Jalankan aplikasi dan login sebagai asisten/praktikan
+2. Untuk asisten:
+   - Tambahkan tugas untuk praktikan
+3. Untuk praktikan:
+   - Lihat kartu kontrol untuk memantau riwayat asistensi
+   - Lihat daftar tugas yang harus diselesaikan
+   - Asistensi tugas
+
+## Persyaratan Sistem
+
+- Java 8 atau lebih baru
+- Library org.json.simple
+>>>>>>> 9b12bf6c9145a5731037aea3bfe58b3e6b56b5d2

@@ -63,10 +63,10 @@ public class App {
         while (true) {
             System.out.println("\n=== MENU ASISTEN ===");
             System.out.println("1. Daftar praktikan asuhan");
-            System.out.println("3. Tambahkan tugas");
-            System.out.println("4. Tampilkan daftar tugas");
-            System.out.println("5. Logout");
-            String[] validMenu = { "1", "2", "3", "4", "5" };
+            System.out.println("2. Tambahkan tugas");
+            System.out.println("3. Tampilkan daftar tugas");
+            System.out.println("4. Logout");
+            String[] validMenu = { "1", "2", "3", "4" };
             String pilih = validator.inputString("Pilih: ", "Pilihan tidak valid", validMenu);
 
             switch (pilih) {
@@ -74,17 +74,14 @@ public class App {
                     ((Asisten) authService.getLoggedInUser()).tampilkanDaftarPraktikanAsuhan();
                     break;
                 case "2":
-
-                    break;
-                case "3":
                     menuTambahkanTugas();
                     runApp();
                     break;
-                case "4":
+                case "3":
                     laboratorium.tampilkanDaftarTugas(laboratorium.getDaftarTugas());
                     menuAsisten();
                     break;
-                case "5":
+                case "4":
                     authService.logout();
                     runApp();
                     return;
